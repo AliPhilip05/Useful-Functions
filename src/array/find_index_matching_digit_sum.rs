@@ -1,22 +1,79 @@
-/// Finds the first index equal to the decimal digit sum of its value.
-///
-/// Takes nonnegative integers and returns `None` if there is no matching index.
-/// The digit sum of zero is zero.
-/// Adapted from LeetCode 3550, Smallest Index With Digit Sum Equal to Index.
-///
-/// ```
-/// use useful_functions::array::find_index_matching_digit_sum;
-/// assert_eq!(find_index_matching_digit_sum(&[1, 10, 11]), Some(1));
-/// ```
-pub fn find_index_matching_digit_sum(values: &[u32]) -> Option<usize> {
-    values.iter().enumerate().find_map(|(index, &value)| {
-        let mut value = value;
-        let mut sum = 0;
-        while value > 0 {
-            sum += value % 10;
-            value /= 10;
+/*
+3550. Smallest Index With Digit Sum Equal to Index
+Solved
+Easy
+
+Topics
+conpanies icon
+Companies
+
+Hint
+You are given an integer array nums.
+
+Return the smallest index i such that the sum of the digits of nums[i] is equal to i.
+
+If no such index exists, return -1.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,2]
+
+Output: 2
+
+Explanation:
+
+For nums[2] = 2, the sum of digits is 2, which is equal to index i = 2. Thus, the output is 2.
+Example 2:
+
+Input: nums = [1,10,11]
+
+Output: 1
+
+Explanation:
+
+For nums[1] = 10, the sum of digits is 1 + 0 = 1, which is equal to index i = 1.
+For nums[2] = 11, the sum of digits is 1 + 1 = 2, which is equal to index i = 2.
+Since index 1 is the smallest, the output is 1.
+Example 3:
+
+Input: nums = [1,2,3]
+
+Output: -1
+
+Explanation:
+
+Since no index satisfies the condition, the output is -1.
+ 
+
+Constraints:
+
+1 <= nums.length <= 100
+0 <= nums[i] <= 1000
+
+*/
+
+impl Solution {
+    pub fn smallest_index(nums: Vec<i32>) -> i32 {
+        let mut index: usize = 0;
+
+        while index < nums.len() {
+            let mut num = nums[index];
+            let mut digit_sum = 0;
+
+            while num > 0 {
+                digit_sum += num % 10;
+                num /= 10;
+            }
+
+            if digit_sum == index as i32 {
+                return index as i32;
+            }
+
+            index += 1;
         }
 
-        (sum as usize == index).then_some(index)
-    })
+        -1
+    }
 }

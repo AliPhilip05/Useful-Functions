@@ -1,36 +1,65 @@
-"""Find gaps in a sorted sequence of integers (adapted from LeetCode 163)."""
+'''You are given an inclusive range [lower, upper] and a sorted unique integer array nums, where all elements are within the inclusive range.
 
-from typing import Iterable
+A number x is considered missing if x is in the range [lower, upper] and x is not in nums.
+
+Return the shortest sorted list of ranges that exactly covers all the missing numbers. That is, no element of nums is included in any of the ranges, and each missing number is covered by one of the ranges.
+
+ 
+
+ 
+
+Example 1:
+
+Input: nums = [0,1,3,50,75], lower = 0, upper = 99
+Output: [[2,2],[4,49],[51,74],[76,99]]
+Explanation: The ranges are:
+[2,2]
+[4,49]
+[51,74]
+[76,99]
+Example 2:
+
+Input: nums = [-1], lower = -1, upper = -1
+Output: []
+Explanation: There are no missing ranges since there are no missing numbers.
+ 
+
+Constraints:
+
+-109 <= lower <= upper <= 109
+0 <= nums.length <= 100
+lower <= nums[i] <= upper
+All the values of nums are unique.'''
 
 
-def find_missing_ranges(
-    values: Iterable[int], lower: int, upper: int
-) -> list[list[int]]:
-    """Return inclusive ranges covering every missing integer in [lower, upper].
+class Solution(object):
+    def findMissingRanges(self, nums, lower, upper):
+        """
+        :type nums: List[int]
+        :type lower: int
+        :type upper: int
+        :rtype: List[List[int]]
+        """
+        # initialize variables
+        output = []
+        templower = lower
+        i = 0
+        length = len(nums)
+        while i < len(nums): # i is in the range from 0 to the size of nums
+            if templower < nums[i]: 
+                output.append([templower,nums[i]-1]) # add the range
+                templower = nums[i]
+                print(output)
 
-    Values must be strictly increasing, unique, and within the requested bounds.
-    Invalid bounds or values raise ValueError. An empty iterable returns the
-    entire requested range. Runs in O(n) time plus the space for the result.
+            elif templower == nums[i]: 
+                templower = templower + 1
+                i = i + 1
+        
+        if upper not in nums:
+            output.append([templower,upper])
 
-    >>> find_missing_ranges([0, 1, 3, 50, 75], 0, 99)
-    [[2, 2], [4, 49], [51, 74], [76, 99]]
-    """
-    if lower > upper:
-        raise ValueError("lower must be less than or equal to upper")
+        return output
 
-    missing = []
-    next_missing = lower
-    previous = None
-    for value in values:
-        if value < lower or value > upper:
-            raise ValueError("values must be within [lower, upper]")
-        if previous is not None and value <= previous:
-            raise ValueError("values must be strictly increasing and unique")
-        if next_missing < value:
-            missing.append([next_missing, value - 1])
-        next_missing = value + 1
-        previous = value
 
-    if next_missing <= upper:
-        missing.append([next_missing, upper])
-    return missing
+
+        

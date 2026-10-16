@@ -1,29 +1,41 @@
-/// Reverses the positions of English vowels, preserving all other characters.
-///
-/// Both uppercase and lowercase `a`, `e`, `i`, `o`, and `u` are vowels here;
-/// accented letters and `y` are left in place.
-/// Adapted from LeetCode 345, Reverse Vowels of a String.
-///
-/// ```
-/// use useful_functions::string::reverse_vowels;
-/// assert_eq!(reverse_vowels("hello"), "holle");
-/// ```
-pub fn reverse_vowels(text: &str) -> String {
-    let is_vowel = |character: char| {
-        matches!(
-            character,
-            'a' | 'e' | 'i' | 'o' | 'u' | 'A' | 'E' | 'I' | 'O' | 'U'
-        )
-    };
-    let mut vowels = text.chars().rev().filter(|&character| is_vowel(character));
+impl Solution {
+    pub fn reverse_vowels(s: String) -> String {
+        //Go through the list
+        let mut reversed_chars: Vec<char> = Vec::new();
+        let mut index_chars: Vec<usize> = Vec::new();
+        let mut index: usize = 0;
+        let original: Vec<char> = s.chars().collect();
 
-    text.chars()
-        .map(|character| {
-            if is_vowel(character) {
-                vowels.next().unwrap_or(character)
-            } else {
-                character
+        for chars in s.chars() {
+            if chars == 'a' || chars == 'e' || chars == 'i' || chars == 'o' || chars == 'u'
+                || chars == 'A' || chars == 'E' || chars == 'I' || chars == 'O' || chars == 'U' {
+                index_chars.push(index)
             }
-        })
-        .collect()
+            index += 1;
+        }
+
+        // reverse that list or vector
+        index_chars.reverse();
+
+        // push into a vector a list of the chars that are vowels
+        index = 0;
+        for chars in s.chars() {
+            if chars == 'a' || chars == 'e' || chars == 'i' || chars == 'o' || chars == 'u'
+                || chars == 'A' || chars == 'E' || chars == 'I' || chars == 'O' || chars == 'U' {
+                // push the vowel from the mirrored position, not the current one
+                let temp_index = index_chars[index];
+                reversed_chars.push(original[temp_index]);
+                index += 1;
+            } else {
+                reversed_chars.push(chars);
+            }
+        }
+
+        // construct a new string using that vector and the original list
+        let mut string: String = String::from("");
+        for chars in reversed_chars {
+            string += &chars.to_string();
+        }
+        string
+    }
 }

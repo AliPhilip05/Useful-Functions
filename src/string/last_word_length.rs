@@ -1,16 +1,65 @@
-/// Counts Unicode scalar values in the final whitespace-separated word.
-///
-/// Returns zero for empty or whitespace-only text. This is a character count,
-/// not a byte count or a count of displayed grapheme clusters.
-/// Adapted from LeetCode 58, Length of Last Word.
-///
-/// ```
-/// use useful_functions::string::last_word_length;
-/// assert_eq!(last_word_length("  fly me to the moon  "), 4);
-/// assert_eq!(last_word_length("hello café"), 4);
-/// ```
-pub fn last_word_length(text: &str) -> usize {
-    text.split_whitespace()
-        .next_back()
-        .map_or(0, |word| word.chars().count())
+/*
+58. Length of Last Word
+Solved
+Easy
+
+Topics
+conpanies icon
+Companies
+Given a string s consisting of words and spaces, return the length of the last word in the string.
+
+A word is a maximal substring consisting of non-space characters only.
+
+ 
+
+Example 1:
+
+Input: s = "Hello World"
+Output: 5
+Explanation: The last word is "World" with length 5.
+Example 2:
+
+Input: s = "   fly me   to   the moon  "
+Output: 4
+Explanation: The last word is "moon" with length 4.
+Example 3:
+
+Input: s = "luffy is still joyboy"
+Output: 6
+Explanation: The last word is "joyboy" with length 6.
+ 
+
+Constraints:
+
+1 <= s.length <= 104
+s consists of only English letters and spaces ' '.
+There will be at least one word in s. */
+
+impl Solution {
+    pub fn length_of_last_word(s: String) -> i32 {
+       let mut v: Vec<i32> = Vec::new();
+        for word in s.split_whitespace().rev() {
+            let length: i32 = word.len() as i32;
+            v.push(length);
+
+            println!("{length}");
+        }
+
+        let length = v[0];
+        length
+    }
 }
+
+/* Adjusted better code after scrolling through notebook 
+
+impl Solution {
+    pub fn length_of_last_word(s: String) -> i32 {
+        s.split_whitespace()
+            .rev()
+            .next()
+            .unwrap()
+            .len() as i32
+    }
+}
+
+*/
